@@ -4,7 +4,7 @@ A demonstration of how to send an HTML mail with Spring using JasperReport as th
 engine. In this demo, two types of HTML mails are demonstated:
 
 1. HTML mail with no inline resources
-2. HTML mail with inline respurces
+2. HTML mail with inline resources
 
 ## Quick Start
 Clone, set the values for the following environment variables and run the repository:

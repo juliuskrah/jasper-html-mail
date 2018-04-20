@@ -1,6 +1,6 @@
 com:
   juliuskrah:
-    cron: 0 48-58 20 ? APR MON-FRI
+    cron: 0 30-58 22 ? APR MON-FRI
     inline-cron: 0 40-50 14-21 ? JAN-APR MON-SAT
     mail:
       message-subject: Tutorial Subject

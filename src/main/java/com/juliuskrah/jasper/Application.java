@@ -15,6 +15,10 @@
  *******************************************************************************/
 package com.juliuskrah.jasper;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,8 +28,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import com.juliuskrah.jasper.ApplicationProperties.Mail.Recipient;
+import com.juliuskrah.jasper.mail.EmailService;
+import com.juliuskrah.jasper.mail.ReportService;
 import com.juliuskrah.jasper.storage.StorageService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,8 +45,12 @@ import lombok.extern.slf4j.Slf4j;
 @EnableAsync
 @EnableScheduling
 @SpringBootApplication
+@RequiredArgsConstructor
 @EnableConfigurationProperties(ApplicationProperties.class)
 public class Application {
+	private final ReportService reportService;
+	private final EmailService emailService;
+	private final ApplicationProperties properties;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -46,7 +58,14 @@ public class Application {
 
 	@Scheduled(cron = "${com.juliuskrah.cron}")
 	void sendHTMLEmail() {
-		log.info("Hello HTML mail!");
+		Set<Recipient> recipients = properties.getMail().getRecipients();
+
+		for (Recipient recipient : recipients) {
+			Map<String, Object> params = new HashMap<>();
+			params.put("username", recipient.getUsername());
+			String html = reportService.generateHtmlReport("html", params);
+			emailService.sendHtmlEmail(recipient.getEmail(), html);
+		}
 	}
 
 	@Scheduled(cron = "${com.juliuskrah.inline-cron}")
