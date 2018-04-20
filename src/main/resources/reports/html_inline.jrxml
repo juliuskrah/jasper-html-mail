@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="html" pageWidth="595" pageHeight="400" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="76078c67-fc7e-42a2-a64f-cdbb097874af">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="html_inline" pageWidth="595" pageHeight="400" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="76078c67-fc7e-42a2-a64f-cdbb097874af">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<parameter name="username" class="java.lang.String"/>
@@ -11,17 +11,21 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="98" splitType="Stretch">
+		<band height="103" splitType="Stretch">
 			<rectangle>
 				<reportElement x="2" y="0" width="550" height="98" backcolor="#4F3906" uuid="3bc38004-2ed4-47f8-af9e-af9e79f13c2c"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="32" y="36" width="490" height="40" uuid="8117fac6-82f8-4403-9c6f-1480b8e8bb48"/>
+				<reportElement x="50" y="29" width="408" height="40" uuid="8117fac6-82f8-4403-9c6f-1480b8e8bb48"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tutorial Report]]></text>
 			</staticText>
+			<image>
+				<reportElement x="470" y="21" width="70" height="60" uuid="63f77dda-e121-481d-a826-a3288749925d"/>
+				<imageExpression><![CDATA["cherry.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<detail>
@@ -45,15 +49,19 @@ This marked a new day in your career as a developer. Great scotts, this day is a
 		</band>
 	</detail>
 	<summary>
-		<band height="55" splitType="Stretch">
+		<band height="95" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="20" width="100" height="30" uuid="178f2459-928c-40b0-a436-746aed9e8035"/>
+				<reportElement x="0" y="0" width="100" height="30" uuid="178f2459-928c-40b0-a436-746aed9e8035"/>
 				<textElement>
 					<font fontName="Arial" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Regards,
 The Tutorial Team]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="30" width="50" height="50" uuid="971a2de6-1a1c-41e6-b348-017f96dc4f2e"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</summary>
 </jasperReport>

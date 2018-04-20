@@ -45,8 +45,13 @@ public class Application {
 	}
 
 	@Scheduled(cron = "${com.juliuskrah.cron}")
-	void sendEmail() {
-		log.info("Hello World!");
+	void sendHTMLEmail() {
+		log.info("Hello HTML mail!");
+	}
+
+	@Scheduled(cron = "${com.juliuskrah.inline-cron}")
+	void sendInlineHTMLEmail() {
+		log.info("Hello inline HTML mail!");
 	}
 
 	@Bean

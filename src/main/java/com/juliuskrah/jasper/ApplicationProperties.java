@@ -41,10 +41,15 @@ public class ApplicationProperties {
 
 	private final @Valid Mail mail = new Mail();
 	/**
-	 * Cron expression for email schedule
+	 * Cron expression to schedule HTML mail
 	 */
 	@NotBlank
 	private String cron;
+	/**
+	 * Cron expression to schedule inline HTML mail
+	 */
+	@NotBlank
+	private String inlineCron;
 	/**
 	 * The base path where reports will be stored after compilation
 	 */
