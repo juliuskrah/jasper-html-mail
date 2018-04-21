@@ -17,6 +17,8 @@ package com.juliuskrah.jasper.mail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +36,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.HtmlExporter;
+import net.sf.jasperreports.engine.export.MapHtmlResourceHandler;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
 import net.sf.jasperreports.export.Exporter;
@@ -119,8 +122,7 @@ public class JasperReportsService implements ReportService {
 	@Override
 	public List<Object> generateInlineHtmlReport(String inputFileName,
 			Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		return null;
+		return generateInlineHtmlReport(inputFileName, params, new JREmptyDataSource());
 	}
 
 	/*
@@ -133,8 +135,50 @@ public class JasperReportsService implements ReportService {
 	@Override
 	public List<Object> generateInlineHtmlReport(String inputFileName,
 			Map<String, Object> params, JRDataSource jRDataSource) {
-		// TODO Auto-generated method stub
-		return null;
+		JasperReport jasperReport = null;
+		List<Object> result = new ArrayList<>();
+
+		// Map<byte[], Map<String, byte[]>> result = new HashMap<>();
+		try (ByteArrayOutputStream byteArray = new ByteArrayOutputStream()) {
+			if (storageService.jasperFileExists(inputFileName)) {
+				jasperReport = (JasperReport) JRLoader
+						.loadObject(storageService.loadJasperFile(inputFileName));
+			}
+			else {
+				String jrxml = storageService.loadJrxmlFile(inputFileName);
+				log.debug("{} loaded. Compiling report", jrxml);
+				jasperReport = JasperCompileManager.compileReport(jrxml);
+				JRSaver.saveObject(jasperReport,
+						storageService.loadJasperFile(inputFileName));
+			}
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params,
+					jRDataSource);
+			Exporter<ExporterInput, HtmlReportConfiguration, HtmlExporterConfiguration, HtmlExporterOutput> exporter;
+			exporter = new HtmlExporter();
+			Map<String, byte[]> resourcesMap = new HashMap<>();
+			SimpleHtmlExporterOutput htmlExporterOutput = new SimpleHtmlExporterOutput(
+					byteArray);
+			htmlExporterOutput
+					.setImageHandler(new MapHtmlResourceHandler((resourcesMap)) {
+						@Override
+						public String getResourcePath(String id) {
+							return "cid:" + id;
+						}
+
+					});
+
+			exporter.setExporterOutput(htmlExporterOutput);
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+			exporter.exportReport();
+			String html = new String(byteArray.toByteArray());
+			result.add(html);
+			result.add(resourcesMap);
+		}
+		catch (JRException | IOException e) {
+			log.error("Encountered error when loading jasper file", e);
+		}
+
+		return result;
 	}
 
 }

@@ -16,6 +16,7 @@
 package com.juliuskrah.jasper;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -71,6 +72,17 @@ public class Application {
 	@Scheduled(cron = "${com.juliuskrah.inline-cron}")
 	void sendInlineHTMLEmail() {
 		log.info("Hello inline HTML mail!");
+		Set<Recipient> recipients = properties.getMail().getRecipients();
+
+		for (Recipient recipient : recipients) {
+			Map<String, Object> params = new HashMap<>();
+			params.put("username", recipient.getUsername());
+			List<Object> result = reportService.generateInlineHtmlReport("html_inline", params);
+			String html = (String) result.get(0);
+			@SuppressWarnings("unchecked")
+			Map<String, byte[]> imageSource = (Map<String, byte[]>) result.get(1);
+			emailService.sendHtmlEmail(recipient.getEmail(), html, imageSource);
+		}
 	}
 
 	@Bean

@@ -17,10 +17,12 @@ package com.juliuskrah.jasper.mail;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -79,8 +81,26 @@ public class HtmlEmailService implements EmailService {
 	@Override
 	public void sendHtmlEmail(String recipient, String html,
 			Map<String, byte[]> imageSource) {
-		// TODO Auto-generated method stub
+		final MimeMessage message = javaMail.createMimeMessage();
+		try {
+			final MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+			helper.setFrom(properties.getMail().getSender(),
+					properties.getMail().getPersonal());
+			helper.setTo(recipient);
+			helper.setSubject(properties.getMail().getMessageSubject());
+			log.info("Sending HTML email to {}", recipient);
+			// Set to true for HTML
+			helper.setText(html, true);
+			for(Entry<String, byte[]> val : imageSource.entrySet()) {
+				helper.addInline(val.getKey(), new ByteArrayResource(val.getValue()), "image/png");
+			}
+			javaMail.send(message);
+		}
+		catch (MessagingException | UnsupportedEncodingException e) {
+			log.error("Error encountered preparing MimeMessage", e);
+		}
 
+		log.debug("Sending html email completed");
 	}
 
 }
