@@ -15,12 +15,6 @@
  *******************************************************************************/
 package com.juliuskrah.jasper;
 
-import java.util.Set;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -38,18 +32,6 @@ import lombok.Data;
 @Validated
 @ConfigurationProperties(prefix = "com.juliuskrah")
 public class ApplicationProperties {
-
-	private final @Valid Mail mail = new Mail();
-	/**
-	 * Cron expression to schedule HTML mail
-	 */
-	@NotBlank
-	private String cron;
-	/**
-	 * Cron expression to schedule inline HTML mail
-	 */
-	@NotBlank
-	private String inlineCron;
 	/**
 	 * The base path where reports will be stored after compilation
 	 */
@@ -60,32 +42,5 @@ public class ApplicationProperties {
 	 */
 	@NotNull
 	private Resource reportLocation;
-
-	@Data
-	public static class Mail {
-		@Email
-		@NotNull
-		private String sender;
-		/**
-		 * The display name for the Sender
-		 */
-		private String personal;
-		private String messageSubject;
-		@NotEmpty
-		private Set<Recipient> recipients;
-
-		@Data
-		public static class Recipient {
-			@NotBlank
-			private String username;
-			private String firstName;
-			private String lastName;
-			@Email
-			@NotNull
-			private String email;
-
-		}
-
-	}
 
 }

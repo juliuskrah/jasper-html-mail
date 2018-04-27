@@ -13,33 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.juliuskrah.jasper.mail;
-
-import static org.junit.Assert.assertNotNull;
+package com.juliuskrah.jasper.web.rest;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-
-import org.junit.Test;
-
-import com.juliuskrah.jasper.ApplicationTests;
 import com.juliuskrah.jasper.jasper.ReportService;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author Julius Krah
  *
  */
-public class ReportServiceTest extends ApplicationTests {
-	@Inject
-	private ReportService reportService;
-	
-	@Test
-	public void whenGeneratePDFThenBytes() {
+@RestController
+@RequiredArgsConstructor
+public class ApplicationResource {
+	private final ReportService reportService;
+
+	@GetMapping("/{username}")
+	public ResponseEntity<byte[]> report(
+			@PathVariable(required = false) String username) {
 		Map<String, Object> params = new HashMap<>();
-		params.put("username", "Julius");
-		byte[] result = reportService.generatePDFReport("pdf_rest_resource", params);
-		assertNotNull(result);
+		params.put("username", username);
+		byte[] bytes = reportService.generatePDFReport("pdf_rest_resource", params);
+		return ResponseEntity
+				.ok()
+				.header("Content-Type", "application/pdf; charset=UTF-8")
+				.header("Content-Disposition", "inline; filename=\"" + username + "\"")
+				.body(bytes);
 	}
 }

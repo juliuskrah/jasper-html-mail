@@ -13,30 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.juliuskrah.jasper.mail;
+package com.juliuskrah.jasper.jasper;
 
 import java.util.Map;
+
+import net.sf.jasperreports.engine.JRDataSource;
 
 /**
  * 
  * @author Julius Krah
  *
  */
-public interface EmailService {
+public interface ReportService {
 	/**
-	 * Sends an HTML mail
+	 * Generates a HTML report with the given input file. Uses a JREmptyDataSource
 	 * 
-	 * @param recipient
-	 * @param html
+	 * @param inputFileName
+	 *            report source file without extension
+	 * @param params
+	 *            report parameters
+	 * @return the byte[] containing the PDF
 	 */
-	void sendHtmlEmail(String recipient, String html);
+	byte[] generatePDFReport(String inputFileName, Map<String, Object> params);
 
 	/**
-	 * Sends an HTML mail with inline images
+	 * Generates a HTML report with the given input file
 	 * 
-	 * @param recipient
-	 * @param html
-	 * @param imageSource
+	 * @param inputFileName
+	 *            report source file without extension
+	 * @param params
+	 *            report parameters
+	 * @param dataSource
+	 *            the source of data
+	 * @return the byte[] containing the PDF
 	 */
-	void sendHtmlEmail(String recipient, String html, Map<String, byte[]> imageSource);
+	byte[] generatePDFReport(String inputFileName, Map<String, Object> params, JRDataSource dataSource);
 }

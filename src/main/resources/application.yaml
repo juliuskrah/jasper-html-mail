@@ -1,22 +1,4 @@
 com:
   juliuskrah:
-    cron: 0 30-58 22 ? APR MON-FRI
-    inline-cron: 0 20-50 11-21 ? JAN-APR MON-SAT
-    mail:
-      message-subject: Tutorial Subject
-      personal: Julius from JuliusKrah.com
-      sender: ${MAIL_USERNAME}
-      recipients:
-      - username: Julius
-        email: juliuskrah@example.com
     report-location: classpath:reports
     storage-location: file:${user.home}/juliuskrah.com
-spring:
-  mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    test-connection: false
-    properties:
-      mail.smtp.starttls.enable: true

@@ -20,7 +20,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="20" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Tutorial Report]]></text>
+				<text><![CDATA[Tutorial PDF Report]]></text>
 			</staticText>
 			<image>
 				<reportElement x="470" y="21" width="70" height="60" uuid="63f77dda-e121-481d-a826-a3288749925d"/>
@@ -32,12 +32,10 @@
 		<band height="125" splitType="Stretch">
 			<staticText>
 				<reportElement x="2" y="30" width="550" height="95" uuid="287a09a0-5d04-462c-9b3b-384c5401f294"/>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="14"/>
 				</textElement>
-				<text><![CDATA[
-On this day you discovered it was possible to send HTML emails with JasperReports.
-This marked a new day in your career as a developer. Great scotts, this day is an actual reality.]]></text>
+				<text><![CDATA[Congratulations on serving your first PDF REST resource using Spring and JasperReports. This report was generated using ResponseEntity and byte[] return type from Jasper PDF exporter.]]></text>
 			</staticText>
 			<textField>
 				<reportElement stretchType="ContainerBottom" x="2" y="0" width="108" height="30" uuid="7a3bf988-71c6-4a99-a740-df8fa59a1fdb"/>
