@@ -35,14 +35,12 @@ import com.juliuskrah.jasper.mail.ReportService;
 import com.juliuskrah.jasper.storage.StorageService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
  * @author Julius Krah
  *
  */
-@Slf4j
 @EnableAsync
 @EnableScheduling
 @SpringBootApplication
@@ -71,7 +69,7 @@ public class Application {
 
 	@Scheduled(cron = "${com.juliuskrah.inline-cron}")
 	void sendInlineHTMLEmail() {
-		log.info("Hello inline HTML mail!");
+
 		Set<Recipient> recipients = properties.getMail().getRecipients();
 
 		for (Recipient recipient : recipients) {
