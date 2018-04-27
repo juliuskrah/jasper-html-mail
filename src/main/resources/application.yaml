@@ -5,7 +5,7 @@ com:
     mail:
       message-subject: Tutorial Subject
       personal: Julius from JuliusKrah.com
-      sender: ${MAIL_USERNAME}
+      sender: ${MAIL_USERNAME:juliuskrah@example.org}
       recipients:
       - username: Julius
         email: juliuskrah@example.com
@@ -13,10 +13,10 @@ com:
     storage-location: file:${user.home}/juliuskrah.com
 spring:
   mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:juliuskrah@example.org}
+    password: ${MAIL_PASSWORD:1234567890}
     test-connection: false
     properties:
       mail.smtp.starttls.enable: true
