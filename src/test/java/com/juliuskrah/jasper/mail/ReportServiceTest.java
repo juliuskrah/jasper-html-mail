@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import org.junit.Test;
 
 import com.juliuskrah.jasper.ApplicationTests;
-import com.juliuskrah.jasper.jasper.ReportService;
+import com.juliuskrah.jasper.report.ReportService;
 
 /**
  * @author Julius Krah
