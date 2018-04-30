@@ -1,22 +1,17 @@
-# JasperReport HTML mail with Spring
+# JasperReport PDF REST API with Spring
 
-A demonstration of how to send an HTML mail with Spring using JasperReport as the template
-engine. In this demo, two types of HTML mails are demonstated:
-
-1. HTML mail with no inline resources
-2. HTML mail with inline resources
+This branch demonstrates how to create a PDF endpoint using Spring REST:
 
 ## Quick Start
-Clone, set the values for the following environment variables and run the repository:
-
-- MAIL_USERNAME
-- MAIL_PASSWORD
-- MAIL_HOST
-- MAIL_PORT
+Clone:
 
 ```posh
 C:\> git clone https://github.com/juliuskrah/jasper-html-mail.git
 C:\> cd jasper-html-mail
-C:\> REM set the environment variables listed above
+C:\> git checkout jasper-rest
 C:\> mvnw spring-boot:run
 ```
+
+Access the endpoint <http://localhost:8080/:username>.
+
+Find the full tutorial here <http://juliuskrah.com/blog/2018/04/30/sping-pdf-rest-api-with-jasperreports/>.
