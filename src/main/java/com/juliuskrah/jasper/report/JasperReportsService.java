@@ -33,8 +33,11 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
 /**
  * @author Julius Krah
@@ -49,30 +52,43 @@ public class JasperReportsService implements ReportService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.juliuskrah.jasper.mail.ReportService#generateHtmlReport(java.lang.String,
+	 * @see
+	 * com.juliuskrah.jasper.mail.ReportService#generateHtmlReport(java.lang.String,
 	 * java.util.Map)
 	 */
 	@Override
 	public byte[] generatePDFReport(String inputFileName, Map<String, Object> params) {
-		return generatePDFReport(inputFileName, params, new JREmptyDataSource());
+		return generatePDFReport(ExportFormat.PDF, inputFileName, params, new JREmptyDataSource());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.juliuskrah.jasper.mail.ReportService#generateHtmlReport(java.lang.String,
+	 * @see
+	 * com.juliuskrah.jasper.mail.ReportService#generateHtmlReport(java.lang.String,
+	 * java.util.Map)
+	 */
+	@Override
+	public byte[] generatePDFReport(ExportFormat format, String inputFileName, Map<String, Object> params) {
+		return generatePDFReport(format, inputFileName, params, new JREmptyDataSource());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.juliuskrah.jasper.mail.ReportService#generateHtmlReport(java.lang.String,
 	 * java.util.Map, net.sf.jasperreports.engine.JRDataSource)
 	 */
 	@Override
-	public byte[] generatePDFReport(String inputFileName, Map<String, Object> params,
+	public byte[] generatePDFReport(ExportFormat format, String inputFileName, Map<String, Object> params,
 			JRDataSource dataSource) {
 		byte[] bytes = null;
 		JasperReport jasperReport = null;
-		try (ByteArrayOutputStream byteArray = new ByteArrayOutputStream()) {
+		try {
 			// Check if a compiled report exists
 			if (storageService.jasperFileExists(inputFileName)) {
-				jasperReport = (JasperReport) JRLoader
-						.loadObject(storageService.loadJasperFile(inputFileName));
+				jasperReport = (JasperReport) JRLoader.loadObject(storageService.loadJasperFile(inputFileName));
 			}
 			// Compile report from source and save
 			else {
@@ -80,18 +96,39 @@ public class JasperReportsService implements ReportService {
 				log.info("{} loaded. Compiling report", jrxml);
 				jasperReport = JasperCompileManager.compileReport(jrxml);
 				// Save compiled report. Compiled report is loaded next time
-				JRSaver.saveObject(jasperReport,
-						storageService.loadJasperFile(inputFileName));
+				JRSaver.saveObject(jasperReport, storageService.loadJasperFile(inputFileName));
 			}
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params,
-					dataSource);
-			bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-		}
-		catch (JRException | IOException e) {
-			e.printStackTrace();
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+			if (format == ExportFormat.PDF)
+				bytes = generatePDF(jasperPrint);
+			else if (format == ExportFormat.XLSX)
+				bytes = generateExcel(jasperPrint);
+		} catch (JRException e) {
 			log.error("Encountered error when loading jasper file", e);
 		}
 
+		return bytes;
+	}
+
+	private byte[] generatePDF(JasperPrint jasperPrint) throws JRException {
+		return JasperExportManager.exportReportToPdf(jasperPrint);
+	}
+
+	private byte[] generateExcel(JasperPrint jasperPrint) throws JRException {
+		byte[] bytes = null;
+		var input = new SimpleExporterInput(jasperPrint);
+		try (var byteArray = new ByteArrayOutputStream()) {
+			var output = new SimpleOutputStreamExporterOutput(byteArray);
+			var exporter = new JRXlsxExporter();
+			exporter.setExporterInput(input);
+			exporter.setExporterOutput(output);
+			exporter.exportReport();
+			bytes = byteArray.toByteArray();
+			output.close();
+
+		} catch (IOException e) {
+			log.error("IO error encountered", e);
+		}
 		return bytes;
 	}
 }

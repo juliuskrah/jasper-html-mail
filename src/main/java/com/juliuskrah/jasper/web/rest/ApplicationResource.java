@@ -20,8 +20,10 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.juliuskrah.jasper.report.ExportFormat;
 import com.juliuskrah.jasper.report.ReportService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,15 +38,18 @@ public class ApplicationResource {
 	private final ReportService reportService;
 
 	@GetMapping("/{username}")
-	public ResponseEntity<byte[]> report(
-			@PathVariable(required = false) String username) {
+	public ResponseEntity<byte[]> report(@PathVariable String username,
+			@RequestParam(defaultValue = "pdf") ExportFormat format) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("username", username);
-		byte[] bytes = reportService.generatePDFReport("pdf_rest_resource", params);
-		return ResponseEntity
-				.ok()
-				.header("Content-Type", "application/pdf; charset=UTF-8")
-				.header("Content-Disposition", "inline; filename=\"" + username + ".pdf\"")
+		String contentType = null;
+		if (format == ExportFormat.PDF)	contentType = "application/pdf";
+		else if (format == ExportFormat.XLSX) contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+		byte[] bytes = reportService.generatePDFReport(format, "pdf_rest_resource", params);
+		return ResponseEntity //
+				.ok() //
+				.header("Content-Type", contentType + "; charset=UTF-8") //
+				.header("Content-Disposition", "inline; filename=\"" + username + "." + format + "\"") //
 				.body(bytes);
 	}
 }
