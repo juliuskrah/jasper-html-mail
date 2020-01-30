@@ -17,6 +17,9 @@ package com.juliuskrah.jasper.web.rest;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,10 +49,14 @@ public class ApplicationResource {
 		if (format == ExportFormat.PDF)	contentType = "application/pdf";
 		else if (format == ExportFormat.XLSX) contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 		byte[] bytes = reportService.generatePDFReport(format, "pdf_rest_resource", params);
+		ContentDisposition contentDisposition = ContentDisposition.builder("inline")
+				.filename(username + "." + format).build();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentDisposition(contentDisposition);
 		return ResponseEntity //
 				.ok() //
 				.header("Content-Type", contentType + "; charset=UTF-8") //
-				.header("Content-Disposition", "inline; filename=\"" + username + "." + format + "\"") //
+				.headers(headers) //
 				.body(bytes);
 	}
 }

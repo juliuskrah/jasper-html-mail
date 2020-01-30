@@ -8,6 +8,7 @@ This branch demonstrates how to create a PDF endpoint using Spring REST:
 2. JDK 11+
 
 ## Quick Start
+
 Clone:
 
 ```posh
@@ -27,7 +28,7 @@ Using cURL
 C:\> curl http://localhost:8080/juliuskrah?format=xlsx --output test.xlsx
 ```
 
-# Implementation
+## Implementation
 
 The following code snippets illustrates how to work with the Jasper Reports
 
