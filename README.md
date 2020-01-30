@@ -7,6 +7,7 @@ engine. In this demo, two types of HTML mails are demonstated:
 2. HTML mail with inline resources
 
 ## Quick Start
+
 Clone, set the values for the following environment variables and run the repository:
 
 - MAIL_USERNAME
@@ -21,3 +22,12 @@ C:\> git checkout jasper-mail
 C:\> REM set the environment variables listed above
 C:\> mvnw spring-boot:run
 ```
+
+## Jasper REST
+
+The [Jasper REST](https://github.com/juliuskrah/jasper-html-mail/tree/jasper-rest) branch of this
+repository provides a nice REST interface to generate your Jasper PDF files using Spring 5 and Spring-Boot 2.
+
+The [Jasper REST Multi-Format](https://github.com/juliuskrah/jasper-html-mail/tree/jasper-rest-multi)
+branch of this repository generates a RESTful representation of the Jasper Report either as PDF or
+Excel based on user input
