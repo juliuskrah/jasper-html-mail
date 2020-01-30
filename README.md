@@ -17,6 +17,7 @@ Clone, set the values for the following environment variables and run the reposi
 ```posh
 C:\> git clone https://github.com/juliuskrah/jasper-html-mail.git
 C:\> cd jasper-html-mail
+C:\> git checkout jasper-mail
 C:\> REM set the environment variables listed above
 C:\> mvnw spring-boot:run
 ```

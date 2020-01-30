@@ -1,7 +1,7 @@
 com:
   juliuskrah:
-    cron: 0 30-58 22 ? APR MON-FRI
-    inline-cron: 0 20-50 11-21 ? JAN-APR MON-SAT
+    cron: 0 20-58 09 ? JAN MON-FRI
+    inline-cron: 0 20-59 09-21 ? JAN-APR MON-SAT
     mail:
       message-subject: Tutorial Subject
       personal: Julius from JuliusKrah.com

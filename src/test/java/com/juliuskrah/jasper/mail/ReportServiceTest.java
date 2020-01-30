@@ -15,7 +15,7 @@
  *******************************************************************************/
 package com.juliuskrah.jasper.mail;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +23,10 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.junit.Test;
 
 import com.juliuskrah.jasper.ApplicationTests;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Julius Krah
