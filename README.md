@@ -8,6 +8,7 @@ This branch demonstrates how to create a PDF endpoint using Spring REST:
 2. JDK 1.8+
 
 ## Quick Start
+
 Clone:
 
 ```posh
